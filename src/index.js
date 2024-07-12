@@ -40,7 +40,8 @@ const {
   EXIT_CODE_KEY,
   ERROR_MESSAGE_KEY,
   VERIFY_VRF_KEY,
-  OPERATION_KEY
+  OPERATION_KEY,
+  CONTRACT_METADATA_KEY
 } = require('./constants')
 
 const { koinos } = require('@koinos/proto-js')
@@ -152,6 +153,20 @@ class MockVM {
           const operation = koinos.protocol.operation.decode(dbObject.value)
 
           const buffer = koinos.chain.get_operation_result.encode({ value: operation }).finish()
+          buffer.copy(retBuf)
+          retBytes = buffer.byteLength
+          break
+        }
+        case koinos.chain.system_call_id.get_contract_metadata: {
+          const dbObject = this.db.getObject(METADATA_SPACE, CONTRACT_METADATA_KEY)
+
+          if (!dbObject) {
+            throw new ExecutionError(`${UInt8ArrayToString(CONTRACT_METADATA_KEY)} is not set`)
+          }
+
+          const contractMetadata = koinos.chain.contract_metadata_object.decode(dbObject.value)
+
+          const buffer = koinos.chain.get_contract_metadata_result.encode({ value: contractMetadata }).finish()
           buffer.copy(retBuf)
           retBytes = buffer.byteLength
           break
