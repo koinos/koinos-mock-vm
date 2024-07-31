@@ -597,7 +597,7 @@ class MockVM {
           const dbObject = this.db.getObject(CONTRACT_NAME_SPACE, address)
 
           if (!dbObject) {
-            throw new ExecutionError(`contract '${EncodeBase58(address)}' name is not set`)
+            throw new ExecutionError(`contract '${encodeBase58(address)}' name is not set`)
           }
 
           const buffer = koinos.contracts.name_service.get_name_result.encode({ value: dbObject.value }).finish()
@@ -611,7 +611,7 @@ class MockVM {
           const dbObject = this.db.getObject(CONTRACT_ADDRESS_SPACE, name)
 
           if (!dbObject) {
-            throw new ExecutionError(`contract name for '${EncodeBase58(address)}' is not set`)
+            throw new ExecutionError(`contract name for '${encodeBase58(address)}' is not set`)
           }
 
           const buffer = koinos.contracts.name_service.get_address_result.encode({ value: dbObject.value }).finish()
