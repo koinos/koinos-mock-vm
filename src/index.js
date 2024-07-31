@@ -611,7 +611,7 @@ class MockVM {
           const dbObject = this.db.getObject(CONTRACT_ADDRESS_SPACE, name)
 
           if (!dbObject) {
-            throw new ExecutionError(`contract name for '${encodeBase58(address)}' is not set`)
+            throw new ExecutionError(`contract name for '${encodeBase58(name)}' is not set`)
           }
 
           const buffer = koinos.contracts.name_service.get_address_result.encode({ value: dbObject.value }).finish()
