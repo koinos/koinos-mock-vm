@@ -603,6 +603,7 @@ class MockVM {
           const nameRecord = koinos.contracts.name_service.name_record.decode(dbObject.value)
 
           const buffer = koinos.contracts.name_service.get_name_result.encode({ value: nameRecord }).finish()
+          buffer.copy(retBuf)
           retBytes = buffer.byteLength
           break;
         }
