@@ -3,6 +3,16 @@ const METADATA_SPACE = {
   id: 0
 }
 
+const CONTRACT_NAME_SPACE = {
+  system: true,
+  id: 1
+}
+
+const CONTRACT_ADDRESS_SPACE = {
+  system: true,
+  id: 2
+}
+
 const ENTRY_POINT_KEY = new TextEncoder('utf-8').encode('entry_point')
 const CONTRACT_ARGUMENTS_KEY = new TextEncoder('utf-8').encode('contract_arguments')
 const CONTRACT_RESULT_KEY = new TextEncoder('utf-8').encode('contract_result')
@@ -29,6 +39,8 @@ const CONTRACT_METADATA_KEY = new TextEncoder('utf-8').encode('contract_metadata
 
 module.exports = {
   METADATA_SPACE,
+  CONTRACT_NAME_SPACE,
+  CONTRACT_ADDRESS_SPACE,
   ENTRY_POINT_KEY,
   CONTRACT_ARGUMENTS_KEY,
   CONTRACT_RESULT_KEY,
