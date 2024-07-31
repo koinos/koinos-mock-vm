@@ -600,9 +600,8 @@ class MockVM {
             throw new ExecutionError(`contract '${encodeBase58(address)}' name is not set`)
           }
 
-          const buffer = koinos.contracts.name_service.get_name_result.encode({ value: UInt8ArrayToString(dbObject.value) }).finish()
-          buffer.copy(retBuf)
-          retBytes = buffer.byteLength
+          dbObject.value.copy(retBuf)
+          retBytes = dbObject.value.byteLength
           break;
         }
         case koinos.chain.system_call_id.get_contract_address: {
@@ -614,9 +613,8 @@ class MockVM {
             throw new ExecutionError(`contract name for '${name}' is not set`)
           }
 
-          const buffer = koinos.contracts.name_service.get_address_result.encode({ value: dbObject.value }).finish()
-          buffer.copy(retBuf)
-          retBytes = buffer.byteLength
+          dbObject.value.copy(retBuf)
+          retBytes = dbObject.value.byteLength
           break;
         }
 
