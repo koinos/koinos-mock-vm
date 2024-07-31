@@ -601,7 +601,6 @@ class MockVM {
           }
 
           const buffer = koinos.contracts.name_service.get_name_result.encode({ value: { name: UInt8ArrayToString(dbObject.value) } }).finish()
-          dbObject.copy(retBuf)
           retBytes = buffer.byteLength
           break;
         }
