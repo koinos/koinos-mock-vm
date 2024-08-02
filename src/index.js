@@ -19,6 +19,8 @@ const {
 } = require('./util')
 const {
   METADATA_SPACE,
+  CONTRACT_NAME_SPACE,
+  CONTRACT_ADDRESS_SPACE,
   ENTRY_POINT_KEY,
   CONTRACT_ARGUMENTS_KEY,
   CONTRACT_RESULT_KEY,
@@ -583,6 +585,43 @@ class MockVM {
           buffer.copy(retBuf)
           retBytes = buffer.byteLength
           break
+        }
+
+        //////////////////////////////////////////////////
+        // System Management                            //
+        //////////////////////////////////////////////////
+
+        case koinos.chain.system_call_id.get_contract_name: {
+          const { address } = koinos.contracts.name_service.get_name_arguments.decode(argsBuf)
+
+          const dbObject = this.db.getObject(CONTRACT_NAME_SPACE, address)
+
+          if (!dbObject) {
+            throw new ExecutionError(`contract '${encodeBase58(address)}' name is not set`)
+          }
+
+          const nameRecord = koinos.contracts.name_service.name_record.decode(dbObject.value)
+
+          const buffer = koinos.contracts.name_service.get_name_result.encode({ value: nameRecord }).finish()
+          buffer.copy(retBuf)
+          retBytes = buffer.byteLength
+          break;
+        }
+        case koinos.chain.system_call_id.get_contract_address: {
+          const { name } = koinos.contracts.name_service.get_address_arguments.decode(argsBuf)
+
+          const dbObject = this.db.getObject(CONTRACT_ADDRESS_SPACE, StringToUInt8Array(name))
+
+          if (!dbObject) {
+            throw new ExecutionError(`contract name for '${name}' is not set`)
+          }
+
+          const addressRecord = koinos.contracts.name_service.address_record.decode(dbObject.value)
+
+          const buffer = koinos.contracts.name_service.get_address_result.encode({ value: addressRecord }).finish()
+          buffer.copy(retBuf)
+          retBytes = buffer.byteLength
+          break;
         }
 
         default:
