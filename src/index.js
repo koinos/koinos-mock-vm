@@ -22,6 +22,7 @@ const {
   ENTRY_POINT_KEY,
   CONTRACT_ARGUMENTS_KEY,
   CONTRACT_RESULT_KEY,
+  CALL_CONTRACT_ARGUMENTS_KEY,
   CALL_CONTRACT_RESULTS_KEY,
   CONTRACT_ID_KEY,
   HEAD_INFO_KEY,
@@ -503,6 +504,17 @@ class MockVM {
         }
         case 'call_contract': {
           const { contract_id, entry_point, args } = this.callContractArgs.decode(argsBuf)
+
+          let callArgumentsBytes = this.db.getObject(METADATA_SPACE, CALL_CONTRACT_ARGUMENTS_KEY);
+          let callArguments;
+          if (callArgumentsBytes) {
+            callArguments = this.listType.decode(callArgumentsBytes.value);
+          } else {
+            callArguments = this.listType.create();
+          }
+          callArguments.values.push(this.valueType.create({ bytes_value: argsBuf }));
+          this.db.putObject(METADATA_SPACE, CALL_CONTRACT_ARGUMENTS_KEY, this.listType.encode(callArguments).finish());
+
           const dbObject = this.db.getObject(METADATA_SPACE, CALL_CONTRACT_RESULTS_KEY)
 
           if (!dbObject) {
