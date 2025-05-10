@@ -24,6 +24,7 @@ const {
   ENTRY_POINT_KEY,
   CONTRACT_ARGUMENTS_KEY,
   CONTRACT_RESULT_KEY,
+  CALL_CONTRACT_ARGUMENTS_KEY,
   CALL_CONTRACT_RESULTS_KEY,
   CONTRACT_ID_KEY,
   HEAD_INFO_KEY,
@@ -444,6 +445,17 @@ class MockVM {
 
         case koinos.chain.system_call_id.call: {
           const { contract_id, entry_point, args } = koinos.chain.call_arguments.decode(argsBuf)
+
+          let callArgumentsBytes = this.db.getObject(METADATA_SPACE, CALL_CONTRACT_ARGUMENTS_KEY);
+          let callArguments;
+          if (callArgumentsBytes) {
+            callArguments = koinos.chain.list_type.decode(callArgumentsBytes.value);
+          } else {
+            callArguments = koinos.chain.list_type.create();
+          }
+          callArguments.values.push(koinos.chain.value_type.create({ bytes_value: argsBuf }));
+          this.db.putObject(METADATA_SPACE, CALL_CONTRACT_ARGUMENTS_KEY, koinos.chain.list_type.encode(callArguments).finish());
+
           const dbObject = this.db.getObject(METADATA_SPACE, CALL_CONTRACT_RESULTS_KEY)
 
           if (!dbObject) {
