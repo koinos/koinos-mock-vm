@@ -16,6 +16,7 @@ const CONTRACT_ADDRESS_SPACE = {
 const ENTRY_POINT_KEY = new TextEncoder('utf-8').encode('entry_point')
 const CONTRACT_ARGUMENTS_KEY = new TextEncoder('utf-8').encode('contract_arguments')
 const CONTRACT_RESULT_KEY = new TextEncoder('utf-8').encode('contract_result')
+const CALL_CONTRACT_ARGUMENTS_KEY = new TextEncoder('utf-8').encode('call_contract_arguments')
 const CALL_CONTRACT_RESULTS_KEY = new TextEncoder('utf-8').encode('call_contract_results')
 const CONTRACT_ID_KEY = new TextEncoder('utf-8').encode('contract_id')
 const HEAD_INFO_KEY = new TextEncoder('utf-8').encode('head_info')
@@ -44,6 +45,7 @@ module.exports = {
   ENTRY_POINT_KEY,
   CONTRACT_ARGUMENTS_KEY,
   CONTRACT_RESULT_KEY,
+  CALL_CONTRACT_ARGUMENTS_KEY,
   CALL_CONTRACT_RESULTS_KEY,
   CONTRACT_ID_KEY,
   HEAD_INFO_KEY,
